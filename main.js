@@ -47,6 +47,14 @@ let instructions2 = {
     }
 };
 
+let raven_test = {
+    type : ilsRaven,
+    stimuli : getTestItems(),
+    on_finish : function (data) {
+        data.rt = Math.round(data.rt);
+    }
+}
+
 let end_screen = {
     type: jsPsychHtmlButtonResponse,
     stimulus: DEBRIEF_MESSAGE,
@@ -74,10 +82,12 @@ function initExperiment() {
     let timeline = [];
 
     // request fullscreen
-    timeline.push(request_fullscreen);
+    // timeline.push(request_fullscreen);
 
     timeline.push(instructions1);
     timeline.push(instructions2);
+
+    timeline.push(raven_test);
 
     timeline.push(end_screen);
 
