@@ -29,6 +29,9 @@ var ilsRaven = (function (jspsych) {
    */
   class RavenPlugin {
 
+      #CONTROL_CLASS = "jspsych-btn ils-raven-control";
+      #RESPONSE_CLASS = "jspsych-btn ils-raven-response";
+
       constructor(jsPsych) {
           this.jsPsych = jsPsych;
       }
@@ -53,6 +56,7 @@ var ilsRaven = (function (jspsych) {
           
           // gather the data to store for the trial
           var trial_data = {
+              answers : this.output,
           };
 
           // clear the display
@@ -62,13 +66,98 @@ var ilsRaven = (function (jspsych) {
           this.jsPsych.finishTrial(trial_data);
       }
 
+      /**
+       * Create the response buttons that users use to answer one question
+       */
+      createResponseButtons() {
+          let html = "";
+
+          html += `<div style="min-width:50vw;max-width:50vw;margin:auto">`;
+          html += `<table style="width:100%;">`;
+
+          for (let i = 0; i < this.stimuli[this.n].num_answers; i++) {
+              let id = `raven${i}`;
+              let checked =
+                  this.output[this.n].answer === i + 1 ? "checked" : "";
+              let thtml =
+                  `<td>`+
+                      `<input ` +
+                          `type="radio" ` +
+                          `name="raven-response" ` + 
+                          `value=${i+1} ` +
+                          `class="${this.#RESPONSE_CLASS}" ` +
+                          `id="${id}" ` +
+                          `${checked}` +
+                          `/>` +
+                      `<label for="${id}">${i+1}</label>` +
+                  `</td>`;
+              html += thtml;
+          }
+          html += "</table>";
+          html += "</div>";
+
+          return html;
+      }
+
+      /**
+       * Create the three buttons at the bottom that control the continuation
+       * of RAVEN task
+       */
+      createControlButtons() {
+          let html = "";
+
+          html += `<div style="min-width:50vw;max-width:50vw;margin:auto">`;
+          html += `<table style="width:100%;">`;
+          html += `<td><button id="control-prev" class=${this.#CONTROL_CLASS}>Ga terug</button></td>` +
+                  `<td><button id="control-end" class=${this.#CONTROL_CLASS}>Einde van het experiment</button></td>` +
+                  `<td><button id="control-next" class=${this.#CONTROL_CLASS}>Ga verder</button></td>`;
+          html += "</table>";
+          html += "</div>";
+
+          return html;
+      }
+
+      installCallbacks() {
+          let prev_button = document.getElementById("control-prev");
+          let end_button = document.getElementById("control-end");
+          let next_button = document.getElementById("control-next");
+
+          prev_button.onclick = this.onPrevButtonClicked;
+          end_button.onclick = this.onEndButtonClicked;
+          next_button.onclick = this.onNextButtonClicked;
+
+          let resp_buttons = document.getElementsByClassName(
+              this.#RESPONSE_CLASS
+          );
+          for (let i = 0; i < resp_buttons.length; i++) {
+              resp_buttons[i].onclick = this.onResponseButtonClicked
+          }
+      }
+
       startTrial(n) {
           this.n = n;
-          let html = `<p>${this.n + 1}/${this.num_trials}</p>`;
-          html += "<button>Ga terug</button>" +
-              "<button>Einde van het experiment</button>" +
-              "<button>Ga verder</button>";
+          let vp_width = window.innerWidth;
+          let vp_height = window.innerHeight;
+          let img_style = "";
+          if (vp_width > vp_height) {
+              img_style = `style="max-height:70vh;width:auto"`;
+          }
+          else {
+              img_style = `style="max-width:70vw;height:auto"`;
+          }
+          let html = "<div>";
+          html += `<p>${this.n + 1}/${this.num_trials}</p>`
+          html += "</div>";
+          html += "<div>";
+          html += `<img src="${this.stimuli[this.n].image}" ${img_style}></img>`;
+          html += "</div>";
+          html += this.createResponseButtons();
+          html += this.createControlButtons();
+
           this.display_element.innerHTML = html;
+
+
+          this.installCallbacks()
 
       }
 
@@ -77,8 +166,34 @@ var ilsRaven = (function (jspsych) {
           this.display_element = display_element;
 
           this.init(trial_params);
+
+          window.onresize = (resize_event) => {
+              this.startTrial(this.n);
+          };
           
-          this.startTrial(0);
+          this.startTrial(this.n);
+      }
+
+      onResponseButtonClicked(event) {
+          let value = event.currentTarget.value;
+          value = parseInt(value);
+          this.output[this.n].answer = value;
+      }
+
+      onPrevButtonClicked() {
+          if (this.n > 0) {
+              this.startTrial(this.n - 1);
+          }
+      }
+
+      onEndButtonClicked() {
+          this.endTrial();
+      }
+
+      onNextButtonClicked(){
+          if (this.n < this.num_trials - 1) {
+              this.startTrial(this.n + 1);
+          }
       }
   }
 
