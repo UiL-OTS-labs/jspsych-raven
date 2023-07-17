@@ -9,6 +9,11 @@ let jsPsych = initJsPsych(
     }
 );
 
+let preload = {
+    type : jsPsychPreload,
+    images : getImages(),
+};
+
 
 let request_fullscreen = {
     type : jsPsychFullscreen,
@@ -50,6 +55,7 @@ let instructions2 = {
 let raven_test = {
     type : ilsRaven,
     stimuli : getTestItems(),
+    max_duration : 35 * 60,
     on_finish : function (data) {
         data.rt = Math.round(data.rt);
     }
@@ -80,6 +86,7 @@ function initExperiment() {
 
 
     let timeline = [];
+    timeline.push(preload);
 
     // request fullscreen
     // timeline.push(request_fullscreen);

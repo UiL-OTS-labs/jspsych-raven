@@ -36,15 +36,20 @@ var ilsRaven = (function (jspsych) {
           this.jsPsych = jsPsych;
       }
 
+      onTimerElapse() { // finished due timer
+          this.endTrial();
+      }
+
       init(trial_params) {
           this.stimuli = trial_params.stimuli;
           this.num_trials = this.stimuli.length;
           this.n = 0; // trial number
           this.output = [];
+          this.trial_start = performance.now();
           for (let i = 0; i < this.num_trials; i++) {
               this.output.push({answer : null});
           }
-          let a = 0;
+          setTimeout(this.onTimerElapse, trial_params.max_duration * 1000);
       }
 
       // Function to end trial when it is time or when the participant
@@ -57,6 +62,7 @@ var ilsRaven = (function (jspsych) {
           // gather the data to store for the trial
           var trial_data = {
               answers : this.output,
+              duration : Math.round(performance.now() - this.trial_start),
           };
 
           // clear the display
