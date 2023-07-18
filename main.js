@@ -89,7 +89,7 @@ function initExperiment() {
     timeline.push(preload);
 
     // request fullscreen
-    // timeline.push(request_fullscreen);
+    timeline.push(request_fullscreen);
 
     timeline.push(instructions1);
     timeline.push(instructions2);
