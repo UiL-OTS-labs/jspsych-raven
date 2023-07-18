@@ -76,16 +76,21 @@ var ilsRaven = (function (jspsych) {
        * Create the response buttons that users use to answer one question
        */
       createResponseButtons() {
-          let html = "";
+          let html = "<cr/>";
 
           html += `<div style="min-width:50vw;max-width:50vw;margin:auto">`;
-          html += `<table style="width:100%;">`;
+          html += `<table style="width:100%;border:1px solid black;border-radius:10px;">`;
+          html += `<tr>`;
 
           for (let i = 0; i < this.stimuli[this.n].num_answers; i++) {
               let id = `raven${i}`;
+              let thtml = "";
               let checked =
                   this.output[this.n].answer === i + 1 ? "checked" : "";
-              let thtml =
+              if (i === this.stimuli[this.n].num_answers / 2) { // add table row
+                  thtml += "</tr><tr>";
+              }
+              thtml +=
                   `<td>`+
                       `<input ` +
                           `type="radio" ` +
@@ -99,6 +104,7 @@ var ilsRaven = (function (jspsych) {
                   `</td>`;
               html += thtml;
           }
+          html += "</tr>";
           html += "</table>";
           html += "</div>";
 
@@ -110,7 +116,7 @@ var ilsRaven = (function (jspsych) {
        * of RAVEN task
        */
       createControlButtons() {
-          let html = "";
+          let html = "<cr/>";
 
           html += `<div style="min-width:50vw;max-width:50vw;margin:auto">`;
           html += `<table style="width:100%;">`;
