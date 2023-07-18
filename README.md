@@ -1,4 +1,4 @@
-# jspsych-auditory-digit-span
+# jspsych-raven
 
 ## Generic documentation
 
@@ -53,7 +53,5 @@ data can be filtered after data collection in many ways.
 Please read the
 [general primer on jsPsych's data](https://github.com/UiL-OTS-labs/jspsych-output)
 if you are new to jsPsych data output.
-
-Essential output for the _'true experimental'_ purpose in this template are:
 
 Good luck, happy experimenting!
