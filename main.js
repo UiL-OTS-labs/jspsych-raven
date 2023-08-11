@@ -17,7 +17,11 @@ let preload = {
 
 let request_fullscreen = {
     type : jsPsychFullscreen,
-    fullscreen_mode : true
+    fullscreen_mode : true,
+    message : "<p>" +
+              "Druk op de knop hieronder om naar een volledig scherm te gaan." +
+              "</p>",
+    button_label : "Ga naar een volledig voledig scherm."
 };
 
 let instructions1 = {
@@ -43,7 +47,7 @@ let instructions2 = {
         return "<div class='instruction' >" +
                "<p>" + text + "</p></div>";
     },
-    choices: ["Ga verder"],
+    choices: ["Begin met het experiment"],
     response_ends_trial: true,
     on_finish : function(data) {
         if (typeof data.rt === "number") {
@@ -63,7 +67,11 @@ let raven_test = {
 
 let end_screen = {
     type: jsPsychHtmlButtonResponse,
-    stimulus: DEBRIEF_MESSAGE,
+    stimulus: function () {
+        let text = DEBRIEF_MESSAGE;
+        return "<div class='instruction'>"
+            + "<p>" + text + "</p></div>";
+    },
     choices: ["einde"],
     trial_duration: DEBRIEF_MESSAGE_DURATION,
     on_finish : function(data) {

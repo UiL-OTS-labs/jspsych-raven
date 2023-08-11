@@ -47,7 +47,7 @@ const INSTRUCTION2 =
     "experiment stopt automatisch 35 minuten nadat je bent gestart."
     "</p>" +
     "<p>" +
-    "Als je klaar bent, klik dan op ‘Ga verder’." +
+    "Als je klaar bent om te beginnen, klik dan op ‘Begin met het experiment’." +
     "</p>";
 
 const DEBRIEF_MESSAGE = 

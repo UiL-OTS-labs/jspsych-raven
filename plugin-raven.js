@@ -31,6 +31,7 @@ var ilsRaven = (function (jspsych) {
 
       #CONTROL_CLASS = "jspsych-btn ils-raven-control";
       #RESPONSE_CLASS = "jspsych-btn ils-raven-response";
+      #HEADER_ID = "raven-header"
 
       constructor(jsPsych) {
           this.jsPsych = jsPsych;
@@ -40,16 +41,25 @@ var ilsRaven = (function (jspsych) {
           this.endTrial();
       }
 
+      onUpdateTime() { // updates the time left
+          this.minutes_elapsed += 1;
+          let header_paragraph = document.getElementById(this.#HEADER_ID)
+          header_paragraph.innerHTML = this.headerText();
+      }
+
       init(trial_params) {
           this.stimuli = trial_params.stimuli;
           this.num_trials = this.stimuli.length;
           this.n = 0; // trial number
           this.output = [];
           this.trial_start = performance.now();
+          this.minutes_elapsed = 0;
+          this.time_tot = trial_params.max_duration / 60;
           for (let i = 0; i < this.num_trials; i++) {
               this.output.push({answer : null});
           }
           setTimeout(this.onTimerElapse, trial_params.max_duration * 1000);
+          setInterval(this.onUpdateTime, 60 * 1000); // every minute
       }
 
       // Function to end trial when it is time or when the participant
@@ -146,6 +156,16 @@ var ilsRaven = (function (jspsych) {
           }
       }
 
+      headerText() { // text for header of trial.
+          let trial_num = this.n + 1;
+          let trial_tot = this.num_trials;
+          let minutes_left = this.time_tot - this.minutes_elapsed;
+          let minutes_tot = this.time_tot;
+          let text = `item: ${trial_num}/${trial_tot}` + "&nbsp".repeat(10) +
+                     `tijd over: ${minutes_left} / ${minutes_tot}`;
+          return text;
+      }
+
       startTrial(n) {
           this.n = n;
           let vp_width = window.innerWidth;
@@ -158,7 +178,7 @@ var ilsRaven = (function (jspsych) {
               img_style = `style="max-width:70vw;height:auto"`;
           }
           let html = "<div>";
-          html += `<p>${this.n + 1}/${this.num_trials}</p>`
+          html += `<p id="${this.#HEADER_ID}">` + this.headerText() + `</p>`;
           html += "</div>";
           html += "<div>";
           html += `<img src="${this.stimuli[this.n].image}" ${img_style}></img>`;
@@ -168,9 +188,7 @@ var ilsRaven = (function (jspsych) {
 
           this.display_element.innerHTML = html;
 
-
           this.installCallbacks()
-
       }
 
       trial(display_element, trial_params, on_load) {
