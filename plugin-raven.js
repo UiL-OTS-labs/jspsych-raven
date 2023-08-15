@@ -81,12 +81,59 @@ var ilsRaven = (function (jspsych) {
               setInterval(this.onUpdateTime, 60 * 1000); // every minute
       }
 
+      // Creates a summary of the performance of the participant
+      createSummary() {
+          let output = this.output
+
+          let summary = {
+              A: 0,
+              B: 0,
+              C: 0,
+              D: 0,
+              E: 0
+          };
+
+          let num_items_group = Math.round(output.length / Object.keys(summary).length);
+          // make sure the output groups divides evenly over all groups
+          console.assert(
+              output.length / Object.keys(summary).length ===
+              Math.floor(output.length / Object.keys(summary).length)
+          );
+          
+          for (let i = 0; i < output.length; i++) {
+              let correct = output[i].correct;
+              if (correct) {
+                  let floor = Math.floor(i / num_items_group);
+                  if (floor === 0) {
+                      summary.A += 1;
+                  }
+                  else if(floor === 1) {
+                      summary.B += 1;
+                  }
+                  else if(floor === 2) {
+                      summary.C += 1;
+                  }
+                  else if(floor === 3) {
+                      summary.D += 1;
+                  }
+                  else if(floor === 4) {
+                      summary.E += 1;
+                  }
+                  else {
+                      console.error("This path shouldn't be reached");
+                  }
+              }
+          }
+          return summary;
+      }
+
       // Function to end trial when it is time or when the participant
       // clicks done.
       //
       endTrial() {
           // kill any remaining setTimeout handlers
           this.jsPsych.pluginAPI.clearAllTimeouts();
+          // These are not registered with jsPsych, hence manual clearing
           clearTimeout(this.timeout_id);
           clearInterval(this.interval_id);
           
@@ -94,6 +141,7 @@ var ilsRaven = (function (jspsych) {
           var trial_data = {
               answers : this.output,
               duration : Math.round(performance.now() - this.trial_start),
+              summary : this.createSummary(),
           };
 
           // clear the display
