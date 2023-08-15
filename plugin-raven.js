@@ -75,8 +75,10 @@ var ilsRaven = (function (jspsych) {
                   }
               );
           }
-          setTimeout(this.onTimerElapse, trial_params.max_duration * 1000);
-          setInterval(this.onUpdateTime, 60 * 1000); // every minute
+          this.timeout_id  = 
+              setTimeout(this.onTimerElapse, trial_params.max_duration * 1000);
+          this.interval_id =
+              setInterval(this.onUpdateTime, 60 * 1000); // every minute
       }
 
       // Function to end trial when it is time or when the participant
@@ -85,6 +87,8 @@ var ilsRaven = (function (jspsych) {
       endTrial() {
           // kill any remaining setTimeout handlers
           this.jsPsych.pluginAPI.clearAllTimeouts();
+          clearTimeout(this.timeout_id);
+          clearInterval(this.interval_id);
           
           // gather the data to store for the trial
           var trial_data = {
