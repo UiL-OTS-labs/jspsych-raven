@@ -17,11 +17,18 @@ var ilsRaven = (function (jspsych) {
               pretty_name: "Maximal duration in seconds",
               default: 35 * 60, // 35 minutes
           },
+          // An object with all the answers for each part.
+          correct_responses: {
+              type: jspsych.ParameterType.INT,
+              pretty_name: "An array containing the answers",
+              default:undefined,
+              array: true
+          },
       },
   };
 
   /**
-   * **audio-digit-span**
+   * **Plugin for the ravens task**
    *
    * jsPsych plugin for playing an entire Raven task
    *
@@ -50,13 +57,23 @@ var ilsRaven = (function (jspsych) {
       init(trial_params) {
           this.stimuli = trial_params.stimuli;
           this.num_trials = this.stimuli.length;
+          this.correct_responses = trial_params.correct_responses;
+          console.assert(this.stimuli.length === this.correct_responses.length);
+          
           this.n = 0; // trial number
           this.output = [];
           this.trial_start = performance.now();
           this.minutes_elapsed = 0;
           this.time_tot = trial_params.max_duration / 60;
+
           for (let i = 0; i < this.num_trials; i++) {
-              this.output.push({answer : null});
+              this.output.push(
+                  {
+                      answer : null,
+                      correct : false,
+                      expected : parseInt(this.correct_responses[i])
+                  }
+              );
           }
           setTimeout(this.onTimerElapse, trial_params.max_duration * 1000);
           setInterval(this.onUpdateTime, 60 * 1000); // every minute
@@ -207,7 +224,9 @@ var ilsRaven = (function (jspsych) {
       onResponseButtonClicked(event) {
           let value = event.currentTarget.value;
           value = parseInt(value);
-          this.output[this.n].answer = value;
+          let out_ref = this.output[this.n];
+          out_ref.answer = value
+          out_ref.correct = value === out_ref.expected;
       }
 
       onPrevButtonClicked() {

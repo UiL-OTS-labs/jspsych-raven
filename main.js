@@ -60,6 +60,7 @@ let raven_test = {
     type : ilsRaven,
     stimuli : getTestItems(),
     max_duration : 35 * 60,
+    correct_responses : ANSWERS,
     on_finish : function (data) {
         data.rt = Math.round(data.rt);
     }
