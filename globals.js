@@ -2,11 +2,15 @@
 // ACCESS_KEY needs to be used for server setup (data store)
 const ACCESS_KEY = '00000000-0000-0000-0000-000000000000'; 
 
+// REDIRECTION_URL should redirect participants back to prolific.
+const REDIRECTION_URL= 'https://app.prolific.co/submissions/complete';
+
+// Fill out the completion key here obtained from prolific.
+const COMPLETION_CODE = 'XXXXXXX'
+
 // max duration of the debriefing message.
 const DEBRIEF_MESSAGE_DURATION = 30000;
 
-
-const REDIRECTION_PAGE = "http://www.nos.nl";
 
 const ANSWERS = [
     // A
