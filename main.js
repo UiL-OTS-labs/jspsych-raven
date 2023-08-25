@@ -80,7 +80,7 @@ let end_screen = {
             data.rt = Math.round(data.rt);
         }
         // redirect to prolific
-        uil.browser.redirect(REDIRECTION_URL, COMPLETION_CODE);
+        uil.browser.redirect(REDIRECTION_URL, {cc : COMPLETION_CODE});
     },
     on_load : function() {
         uil.saveData(ACCESS_KEY);
