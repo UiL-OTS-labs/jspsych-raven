@@ -104,10 +104,19 @@ function initExperiment() {
     // request fullscreen
     timeline.push(request_fullscreen);
 
+    // start recording focus from here
+    timeline.push({
+        type : IlsFocusPlugin
+    });
+
     timeline.push(instructions1);
     timeline.push(instructions2);
 
     timeline.push(raven_test);
+    
+    timeline.push({
+        type : IlsFocusPlugin
+    });
 
     timeline.push(end_screen);
 
