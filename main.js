@@ -95,6 +95,7 @@ function initExperiment() {
         SESSION_ID : jsPsych.data.getURLVariable('SESSION_ID'),
     };
     jsPsych.data.addProperties(prolific_vars);
+    jsPsych.data.addProperties({task_name : "ravens"});
 
     let timeline = [];
     timeline.push(preload);
