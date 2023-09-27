@@ -124,6 +124,11 @@ var ilsRaven = (function (jspsych) {
                   }
               }
           }
+
+          let total = 0;
+          Object.values(summary).forEach((val) => {total += val});
+          summary.total = total;
+
           return summary;
       }
 
@@ -199,9 +204,13 @@ var ilsRaven = (function (jspsych) {
 
           html += `<div style="min-width:50vw;max-width:50vw;margin:auto">`;
           html += `<table style="width:100%;">`;
-          html += `<td><button id="control-prev" class=${this.#CONTROL_CLASS}>Ga terug</button></td>` +
-                  `<td><button id="control-end" class=${this.#CONTROL_CLASS}>Einde van het experiment</button></td>` +
-                  `<td><button id="control-next" class=${this.#CONTROL_CLASS}>Ga verder</button></td>`;
+          html += `<tr>`;
+          html += `<td style="width:50%"><button id="control-prev" class=${this.#CONTROL_CLASS}>Ga terug</button></td>` +
+                  `<td style="width:50%"><button id="control-next" class=${this.#CONTROL_CLASS}>Ga verder</button></td>`;
+          html += `</tr>`;
+          html += `<tr>`;
+          html += `<td colspan="2"><button id="control-end" class=${this.#CONTROL_CLASS}>Einde van het experiment</button></td>`;
+          html += `</tr>`;
           html += "</table>";
           html += "</div>";
 

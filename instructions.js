@@ -5,6 +5,12 @@
  * utf8 text encoding.
  */
 
+const FULLSCREEN_PROMPT =
+    "<p>Druk op de knop hieronder om naar een volledig scherm te gaan.</p>";
+
+const FULLSCREEN_BUTTON_LABEL = 
+    "Ga naar een volledig scherm.";
+
 const INSTRUCTION1 =
     "<h1>INSTRUCTIES</h1> "                                                     +
     "<p>"                                                                      +

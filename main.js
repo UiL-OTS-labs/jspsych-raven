@@ -18,10 +18,8 @@ let preload = {
 let request_fullscreen = {
     type : jsPsychFullscreen,
     fullscreen_mode : true,
-    message : "<p>" +
-              "Druk op de knop hieronder om naar een volledig scherm te gaan." +
-              "</p>",
-    button_label : "Ga naar een volledig voledig scherm."
+    message : FULLSCREEN_PROMPT,
+    button_label : FULLSCREEN_BUTTON_LABEL
 };
 
 let instructions1 = {
@@ -97,6 +95,7 @@ function initExperiment() {
         SESSION_ID : jsPsych.data.getURLVariable('SESSION_ID'),
     };
     jsPsych.data.addProperties(prolific_vars);
+    jsPsych.data.addProperties({task_name : "ravens"});
 
     let timeline = [];
     timeline.push(preload);
