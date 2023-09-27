@@ -124,6 +124,11 @@ var ilsRaven = (function (jspsych) {
                   }
               }
           }
+
+          let total = 0;
+          Object.values(summary).forEach((val) => {total += val});
+          summary.total = total;
+
           return summary;
       }
 
