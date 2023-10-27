@@ -57,6 +57,7 @@ const INSTRUCTION2 =
     "</p>";
 
 const DEBRIEF_MESSAGE = 
-    "Dit is het einde van het tweede deel van het experiment!" +
-    "<br>Dank je wel voor jouw deelname!";
+    "Dit is het einde van het experiment!" +
+    "<br>Dank je wel voor jouw deelname!" +
+    "<br><br>Druk op 'einde' om doorverwezen te worden naar prolific";
 
